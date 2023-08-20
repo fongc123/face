@@ -3,7 +3,7 @@ import websockets
 import json
 import datetime
 from copy import deepcopy
-import mysql
+# import mysql
 import argparse
 
 def dtnow():
@@ -103,6 +103,7 @@ def save_file(message):
             json.dump(message, f, indent=4)
 
 async def handle(websocket, path, sql_host, sql_user, sql_pass, sql_db, sql_table):
+    print('hi')
     while True:
         try:
             # read message from client
@@ -112,7 +113,7 @@ async def handle(websocket, path, sql_host, sql_user, sql_pass, sql_db, sql_tabl
 
             # get response
             response = get_response(message)
-            insert_db(message, sql_host, sql_user, sql_pass, sql_db, sql_table)
+            # insert_db(message, sql_host, sql_user, sql_pass, sql_db, sql_table)
             await send_response(websocket, response)
         except Exception as e:
             print(f"Error: {e}")
@@ -125,14 +126,15 @@ async def main(listen_ip, listen_port, sql_host, sql_user, sql_pass, sql_db, sql
         await asyncio.Future()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Websocket server for AiFace device.')
-    parser.add_argument('-i', '--listen_ip', type=str, default='localhost', help='IP address to listen on.')
-    parser.add_argument('-p', '--listen_port', type=int, default=7788, help='Port to listen on.')
-    parser.add_argument('-h', '--sql_host', type=str, default='localhost', help='MySQL host.')
-    parser.add_argument('-u', '--sql_user', type=str, default='root', help='MySQL user.')
-    parser.add_argument('-pw', '--sql_pass', type=str, default='password', help='MySQL password.')
-    parser.add_argument('-db', '--sql_db', type=str, default='database', help='MySQL database.')
-    parser.add_argument('-t', '--sql_table', type=str, default='records', help='MySQL table.')
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description='Websocket server for AiFace device.')
+    # parser.add_argument('-i', '--listen_ip', type=str, default='localhost', help='IP address to listen on.')
+    # parser.add_argument('-p', '--listen_port', type=int, default=7788, help='Port to listen on.')
+    # parser.add_argument('-host', '--sql_host', type=str, default='localhost', help='MySQL host.')
+    # parser.add_argument('-u', '--sql_user', type=str, default='root', help='MySQL user.')
+    # parser.add_argument('-pw', '--sql_pass', type=str, default='password', help='MySQL password.')
+    # parser.add_argument('-db', '--sql_db', type=str, default='database', help='MySQL database.')
+    # parser.add_argument('-t', '--sql_table', type=str, default='records', help='MySQL table.')
+    # args = parser.parse_args()
 
-    asyncio.run(main(args.listen_ip, args.listen_port, args.sql_host, args.sql_user, args.sql_pass, args.sql_db, args.sql_table))
+    # asyncio.run(main(args.listen_ip, args.listen_port, args.sql_host, args.sql_user, args.sql_pass, args.sql_db, args.sql_table))
+    asyncio.run(main("169.254.121.173", 7788, "k", "k", "k", "k", "k"))

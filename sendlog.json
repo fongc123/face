@@ -1,0 +1,18 @@
+{
+    "cmd": "sendlog",
+    "sn": "ZXRB22001001",
+    "count": 1,
+    "logindex": 0,
+    "record": [
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "fong",
+            "time": "2023-08-16 23:45:31",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        }
+    ]
+}

@@ -1,10 +1,12 @@
-version: '1'
+version: '1.1'
 services:
   redis:
     image: redis
 
   ws:
-    image: face-ws
+    build:
+      context: ./
+      dockerfile: ./ws/Dockerfile
     depends_on:
       - redis
     env_file:
@@ -16,7 +18,9 @@ services:
       - LOG_SERVER_PREFIX=SERVER
 
   flask:
-    image: face-flask
+    build:
+      context: ./
+      dockerfile: ./flask/Dockerfile
     depends_on:
       - redis
     env_file:
@@ -27,6 +31,6 @@ services:
       - REDIS_IP=redis
 
 networks:
-  default:
-    external:
-      name: face
+  face:
+    name: face
+    external: true

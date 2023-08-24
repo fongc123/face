@@ -1,0 +1,80 @@
+{
+    "ret": "getnewlog",
+    "sn": "ZXRB22001001",
+    "result": true,
+    "count": 7,
+    "from": 0,
+    "to": 7,
+    "record": [
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 15:56:49",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 15:59:09",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 16:11:07",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 16:51:48",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 16:56:29",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 16:57:39",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 16:59:02",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        }
+    ]
+}

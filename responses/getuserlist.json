@@ -1,0 +1,58 @@
+{
+    "ret": "getuserlist",
+    "sn": "ZXRB22001001",
+    "result": true,
+    "count": 8,
+    "from": 0,
+    "to": 8,
+    "record": [
+        {
+            "enrollid": 1,
+            "aliasid": "",
+            "admin": "1",
+            "backupnum": 11
+        },
+        {
+            "enrollid": 1,
+            "aliasid": "",
+            "admin": "1",
+            "backupnum": 50
+        },
+        {
+            "enrollid": 2,
+            "aliasid": "",
+            "admin": "2",
+            "backupnum": 11
+        },
+        {
+            "enrollid": 2,
+            "aliasid": "",
+            "admin": "2",
+            "backupnum": 50
+        },
+        {
+            "enrollid": 3,
+            "aliasid": "",
+            "admin": "0",
+            "backupnum": 11
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "admin": "1",
+            "backupnum": 50
+        },
+        {
+            "enrollid": 5,
+            "aliasid": "",
+            "admin": "1",
+            "backupnum": 50
+        },
+        {
+            "enrollid": 6,
+            "aliasid": "",
+            "admin": "1",
+            "backupnum": 50
+        }
+    ]
+}

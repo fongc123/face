@@ -1,0 +1,7 @@
+{
+    "ret": "getalluser",
+    "sn": "ZXRB22001001",
+    "result": false,
+    "reason": 1,
+    "msg": "can not find this command"
+}

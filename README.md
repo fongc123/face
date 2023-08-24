@@ -1,11 +1,11 @@
-## Face Scan Server
+# Face Scan Server
 
 Files for three-component server application to send messages to and receive messages from the face scanning AiFace device.
 
-# Description
+## Description
 To facilitate bi-directional communication with the face scanning device, a WebSocket application, a Flask application, and a Redis data store were implemented. The WebSocket application handles communication with the device, the Flask application handles external HTTP requests, and the Redis data store facilitates in-memory data transfer between the two applications. Optionally, a MySQL database can be specified, which will insert activity records (e.g., scanning a face on device) into the database.
 
-# Installation
+## Installation
 Docker allows for easy installation. A Docker Compose YAML file and Dockerfiles are provided in the repository.
 
 1. Clone the repository.
@@ -25,16 +25,17 @@ docker-compose up
 
 4. Ensure that the AiFace device is connected to the same network as the server and points to the server's IP address. If successful, a log indicating that the device has successfully registered with the server should appear.
 
-# Usage
+## Usage
 Upon starting Docker Compose, both the WebSocket and Flask applications *should* begin listening for WebSocket and HTTP requests. When a user interacts with the device (e.g., scans their face), the AiFace device will send a `sendlog` message to the WebSocket, which will be displayed in the server terminal.
 
 The `/admin/push` endpoint is open to issue JSON commands to the device. By default, the Flask port is set to 5000, as specified in the sample `.env`. A Bearer authorization key is also required. At the moment, it is simply set to an environment variable with no encryption or renewal. The example below demonstrates how to list all users currently registered in the AiFace device's system.
 
+`POST /admin/push (with Bearer authorization key)`
+
 ```json
-// POST /admin/push (with Bearer authorization key)
 {
-    "sn" : "ZXRB22001001", // device serial number
-    "cmd" : "getuserlist", // command 
+    "sn" : "ZXRB22001001",
+    "cmd" : "getuserlist",
     "stn" : true
 }
 ```

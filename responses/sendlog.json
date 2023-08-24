@@ -1,14 +1,44 @@
 {
     "cmd": "sendlog",
     "sn": "ZXRB22001001",
-    "count": 1,
+    "count": 4,
     "logindex": 0,
     "record": [
         {
             "enrollid": 4,
             "aliasid": "",
             "name": "Commander Zavala",
-            "time": "2023-08-24 17:07:09",
+            "time": "2023-08-24 12:08:28",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 12:08:31",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 12:08:52",
+            "mode": 8,
+            "inout": 0,
+            "event": 0,
+            "note": {}
+        },
+        {
+            "enrollid": 4,
+            "aliasid": "",
+            "name": "Commander Zavala",
+            "time": "2023-08-24 12:13:49",
             "mode": 8,
             "inout": 0,
             "event": 0,

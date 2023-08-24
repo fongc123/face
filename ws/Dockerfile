@@ -10,4 +10,4 @@ RUN pip install -r /app/requirements.txt
 
 WORKDIR /app/ws
 
-CMD ["python", "app_ws.py", "--receive", "--insert"]
+CMD ["python", "-u", "app_ws.py", "--receive", "--insert"]

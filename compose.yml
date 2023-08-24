@@ -1,20 +1,32 @@
 version: '1'
 services:
+  redis:
+    image: redis
+
   ws:
     image: face-ws
-    ports:
-      - 7788:7788
+    depends_on:
+      - redis
     env_file:
       - .env
+    ports:
+      - 7788:7788
+    environment:
+      - REDIS_IP=redis
+      - LOG_SERVER_PREFIX=SERVER
 
   flask:
     image: face-flask
-    ports:
-      - 5000:5000
+    depends_on:
+      - redis
     env_file:
       - .env
-
-  redis:
-    image: redis
     ports:
-      - 6379:6379
+      - 5000:5000
+    environment:
+      - REDIS_IP=redis
+
+networks:
+  default:
+    external:
+      name: face

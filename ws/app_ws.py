@@ -18,7 +18,6 @@ import mysql.connector
 import argparse
 import redis
 import os
-import dotenv
 
 def dtnow():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -189,27 +188,25 @@ if __name__ == "__main__":
     parser.add_argument("--receive", action="store_true", help="Receive data from Redis database.")
     parser.set_defaults(insert=False, receive=False)
     args = parser.parse_args()
-
-    opts = dotenv.dotenv_values(args.env)
     
-    SERVER_LOG_PREFIX = opts["LOG_SERVER_PREFIX"]
-    CLIENT_LOG_PREFIX = opts["LOG_CLIENT_PREFIX"]
-    REDIS_DB_PREFIX = opts["REDIS_DB_PREFIX"]
-    REDIS_OUTGOING_KEY = opts["REDIS_OUT_KEY"]
-    REDIS_INCOMING_KEY = opts["REDIS_IN_KEY"]
-    RESPONSES_PATH = opts["PATH_WS_RESPONSES"]
-    NEW_MESSAGE_TIMEOUT = int(opts["TIMEOUT_WS_NEW_MESSAGE"])
+    SERVER_LOG_PREFIX = os.getenv("LOG_SERVER_PREFIX")
+    CLIENT_LOG_PREFIX = os.getenv("LOG_CLIENT_PREFIX")
+    REDIS_DB_PREFIX = os.getenv("REDIS_DB_PREFIX")
+    REDIS_OUTGOING_KEY = os.getenv("REDIS_OUT_KEY")
+    REDIS_INCOMING_KEY = os.getenv("REDIS_IN_KEY")
+    RESPONSES_PATH = os.getenv("PATH_WS_RESPONSES")
+    NEW_MESSAGE_TIMEOUT = int(os.getenv("TIMEOUT_WS_NEW_MESSAGE"))
 
     asyncio.run(main(
-        opts["WEBSOCKET_IP"],
-        int(opts["WEBSOCKET_PORT"]),
-        opts["REDIS_IP"],
-        int(opts["REDIS_PORT"]),
-        opts["MYSQL_HOST"],
-        opts["MYSQL_USER"],
-        opts["MYSQL_PASS"],
-        opts["MYSQL_DATA"],
-        opts["MYSQL_TABL"],
+        os.getenv("WEBSOCKET_IP"),
+        int(os.getenv("WEBSOCKET_PORT")),
+        os.getenv("REDIS_IP"),
+        int(os.getenv("REDIS_PORT")),
+        os.getenv("MYSQL_HOST"),
+        os.getenv("MYSQL_USER"),
+        os.getenv("MYSQL_PASS"),
+        os.getenv("MYSQL_DATA"),
+        os.getenv("MYSQL_TABL"),
         args.insert,
         args.receive
     ))

@@ -18,7 +18,7 @@ import json
 from threading import Lock
 import time
 from argparse import ArgumentParser
-import dotenv
+import os
 
 app = Flask(__name__)
 lock = Lock()
@@ -73,17 +73,15 @@ if __name__ == "__main__":
     parser.add_argument("--env", type=str, default="../.env", help="Config stored in an environment file.")
     args = parser.parse_args()
 
-    opts = dotenv.dotenv_values(args.env)
-
-    FLASK_IP = opts["FLASK_IP"]
-    FLASK_PORT = int(opts["FLASK_PORT"])
-    REDIS_IP = opts["REDIS_IP"]
-    REDIS_PORT = int(opts["REDIS_PORT"])
-    REDIS_DB_PREFIX = opts["REDIS_DB_PREFIX"]
-    REDIS_OUTGOING_KEY = opts["REDIS_OUT_KEY"]
-    REDIS_INCOMING_KEY = opts["REDIS_IN_KEY"]
-    AUTHORIZATION_KEY = opts["FLASK_AUTHORIZATION_KEY"]
-    LOCK_TIMEOUT = int(opts["TIMEOUT_HTTP_LOCK"])
-    WAIT_RESPONSE_TIMEOUT = int(opts["TIMEOUT_HTTP_WAIT_RESPONSE"])
+    FLASK_IP = os.getenv("FLASK_IP")
+    FLASK_PORT = int(os.getenv("FLASK_PORT"))
+    REDIS_IP = os.getenv("REDIS_IP")
+    REDIS_PORT = int(os.getenv("REDIS_PORT"))
+    REDIS_DB_PREFIX = os.getenv("REDIS_DB_PREFIX")
+    REDIS_OUTGOING_KEY = os.getenv("REDIS_OUT_KEY")
+    REDIS_INCOMING_KEY = os.getenv("REDIS_IN_KEY")
+    AUTHORIZATION_KEY = os.getenv("FLASK_AUTHORIZATION_KEY")
+    LOCK_TIMEOUT = int(os.getenv("TIMEOUT_HTTP_LOCK"))
+    WAIT_RESPONSE_TIMEOUT = int(os.getenv("TIMEOUT_HTTP_WAIT_RESPONSE"))
 
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=True)

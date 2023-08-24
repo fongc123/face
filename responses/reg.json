@@ -14,12 +14,12 @@
         "usedfp": 0,
         "usedcard": 3,
         "usedpwd": 0,
-        "usedlog": 2,
-        "usednewlog": 2,
+        "usedlog": 6,
+        "usednewlog": 6,
         "netinuse": 1,
         "fpalgo": "thbio3.0",
         "firmware": "AiF43V_v4.40",
-        "time": "2023-08-24 18:38:43",
+        "time": "2023-08-24 12:23:53",
         "mac": "00-01-A9-23-EA-6B"
     }
 }

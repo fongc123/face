@@ -149,11 +149,13 @@ async def handle(websocket, path, r_ip, r_port, sql_host, sql_user, sql_pass, sq
     if receive:
         r_db = redis.Redis(host=r_ip, port=r_port, db=0)
 
+    no_message_counter = 0
     while True:
         try:
             # read message from client
             try:
                 message = await asyncio.wait_for(websocket.recv(), timeout=NEW_MESSAGE_TIMEOUT)
+                no_message_counter = 0
             except asyncio.TimeoutError:
                 message = None
 
@@ -173,6 +175,11 @@ async def handle(websocket, path, r_ip, r_port, sql_host, sql_user, sql_pass, sq
                     if receive and device_sn is not None:
                         r_db.rpush(f"{REDIS_DB_PREFIX}_{device_sn}_{REDIS_INCOMING_KEY}", json.dumps(message))
                         print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Incoming message ({message['ret']}) received from {device_sn}.")
+            else:
+                no_message_counter += 1
+                if no_message_counter >= MAX_MESSAGE_TIMEOUT: # if no message received for a long time (default: ~ 5 min.), break
+                    print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Idle timeout for device {device_sn} exceeded. Bye bye!")
+                    break
 
             # send message to client
             if device_sn is not None:
@@ -212,6 +219,7 @@ if __name__ == "__main__":
     REDIS_INCOMING_KEY = os.getenv("REDIS_IN_KEY")
     RESPONSES_PATH = os.getenv("PATH_WS_RESPONSES")
     NEW_MESSAGE_TIMEOUT = int(os.getenv("TIMEOUT_WS_NEW_MESSAGE"))
+    MAX_MESSAGE_TIMEOUT = int(os.getenv("TIMEOUT_WS_MAX_WAIT"))
 
     asyncio.run(main(
         os.getenv("WEBSOCKET_IP"),

@@ -124,6 +124,8 @@ async def insert_record(message, db, sql_table):
         cursor.executemany(sql, val)
         db.commit()
 
+        print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Inserted {message['count']} records from {message['sn']} to {sql_table}.")
+
 def save_file(message, path):
     filename = None
     if "cmd" in message.keys():

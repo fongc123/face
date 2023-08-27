@@ -14,7 +14,7 @@ import websockets
 import json
 import datetime
 from copy import deepcopy
-import mysql.connector
+import pymssql
 import argparse
 import redis
 import os
@@ -76,38 +76,52 @@ async def send_response(websocket, message):
     else:
         raise Exception("Undefined message received.")
 
-async def connect_mysql(sql_host, sql_user, sql_pass, sql_db):
+async def connect_mssql(sql_host, sql_user, sql_pass, sql_db):
     try:
-        db = mysql.connector.connect(
-            host=sql_host,
-            user=sql_user,
-            password=sql_pass,
-            database=sql_db
-        )
+        db = pymssql.connect(sql_host, sql_user, sql_pass, sql_db)
 
         return db
     except Exception as e:
-        print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Error: Could not connect to MySQL database. {e}.")
+        print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Error: Could not connect to MSSQL database. {e}.")
         return None
 
 async def insert_record(message, db, sql_table):
     if message['cmd'] == 'sendlog':
         cursor = db.cursor()
-        sql = f"INSERT INTO {sql_table} (cmd, sn, enrollid, aliasid, name, time, mode, input, event) VALUES (%s, %s, %s)"
-        val = [
-            (
-                message['record']['cmd'],
-                message['record']['sn'],
-                message['record'][i]['enrollid'],
-                message['record'][i]['aliasid'],
-                message['record'][i]['name'],
-                message['record'][i]['time'],
-                message['record'][i]['mode'],
-                message['record'][i]['inout'],
-                message['record'][i]['event']
-            ) for i in range(message['count'])
-        ]
-        cursor.execute(sql, val)
+
+        # create table if not exist
+        _script_create_table = f"""
+        IF OBJECT_ID('{sql_table}', 'U') IS NULL
+            CREATE TABLE {sql_table} (
+                cmd VARCHAR(255),
+                sn VARCHAR(255),
+                enrollid INT,
+                aliasid INT,
+                name VARCHAR(255),
+                time VARCHAR(255),
+                mode INT,
+                inout INT,
+                event INT
+            )
+        """
+        cursor.execute(_script_create_table)
+        db.commit()
+
+        sql = f"""
+        INSERT INTO {sql_table} (cmd, sn, enrollid, aliasid, name, time, mode, inout, event) VALUES (%s, %s, %d, %d, %s, %s, %d, %d, %d)
+        """
+        val = [(
+            message['cmd'],
+            message['sn'],
+            message['record'][i]['enrollid'],
+            message['record'][i]['aliasid'],
+            message['record'][i]['name'],
+            message['record'][i]['time'],
+            message['record'][i]['mode'],
+            message['record'][i]['inout'],
+            message['record'][i]['event']
+        ) for i in range(message['count'])]
+        cursor.executemany(sql, val)
         db.commit()
 
 def save_file(message, path):
@@ -129,7 +143,7 @@ async def handle(websocket, path, r_ip, r_port, sql_host, sql_user, sql_pass, sq
     # connect to databases
     device_sn = None
     if insert:
-        sql_db = await connect_mysql(sql_host, sql_user, sql_pass, sql_db)
+        sql_db = await connect_mssql(sql_host, sql_user, sql_pass, sql_db)
     if receive:
         r_db = redis.Redis(host=r_ip, port=r_port, db=0)
 
@@ -184,7 +198,7 @@ async def main(ws_ip, ws_port, r_ip, r_port, sql_host, sql_user, sql_pass, sql_d
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Websocket server for AiFace device.')
     parser.add_argument("--env", type=str, default="../.env", help="Config stored in an environment file.")
-    parser.add_argument("--insert", action="store_true", help="Insert data to MySQL database.")
+    parser.add_argument("--insert", action="store_true", help="Insert data to Microsoft SQL database.")
     parser.add_argument("--receive", action="store_true", help="Receive data from Redis database.")
     parser.set_defaults(insert=False, receive=False)
     args = parser.parse_args()
@@ -202,11 +216,11 @@ if __name__ == "__main__":
         int(os.getenv("WEBSOCKET_PORT")),
         os.getenv("REDIS_IP"),
         int(os.getenv("REDIS_PORT")),
-        os.getenv("MYSQL_HOST"),
-        os.getenv("MYSQL_USER"),
-        os.getenv("MYSQL_PASS"),
-        os.getenv("MYSQL_DATA"),
-        os.getenv("MYSQL_TABL"),
+        os.getenv("MSSQL_HOST"),
+        os.getenv("MSSQL_USER"),
+        os.getenv("MSSQL_PASS"),
+        os.getenv("MSSQL_DATA"),
+        os.getenv("MSSQL_TABL"),
         args.insert,
         args.receive
     ))

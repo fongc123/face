@@ -3,7 +3,7 @@
 Files for three-component server application to send messages to and receive messages from the face scanning AiFace device.
 
 ## Description
-To facilitate bi-directional communication with the face scanning device, a WebSocket application, a Flask application, and a Redis data store were implemented. The WebSocket application handles communication with the device, the Flask application handles external HTTP requests, and the Redis data store facilitates in-memory data transfer between the two applications. Optionally, a MySQL database can be specified, which will insert activity records (e.g., scanning a face on device) into the database.
+To facilitate bi-directional communication with the face scanning device, a WebSocket application, a Flask application, and a Redis data store were implemented. The WebSocket application handles communication with the device, the Flask application handles external HTTP requests, and the Redis data store facilitates in-memory data transfer between the two applications. Optionally, a Microsoft SQL (MSSQL) database can be specified, which will insert activity records (e.g., scanning a face on device) into the database.
 
 ## Installation
 Docker allows for easy installation. A Docker Compose YAML file and Dockerfiles are provided in the repository.

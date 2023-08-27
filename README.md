@@ -28,9 +28,9 @@ docker-compose up
 ## Usage
 Upon starting Docker Compose, both the WebSocket and Flask applications *should* begin listening for WebSocket and HTTP requests. When a user interacts with the device (e.g., scans their face), the AiFace device will send a `sendlog` message to the WebSocket, which will be displayed in the server terminal.
 
-The `/admin/push` endpoint is open to issue JSON commands to the device. By default, the Flask port is set to 5000, as specified in the sample `.env`. A Bearer authorization key is also required. At the moment, it is simply set to an environment variable with no encryption or renewal. The example below demonstrates how to list all users currently registered in the AiFace device's system.
+The `/admin/push` endpoint is open to issue JSON commands to the device. By default, the Flask port is set to 5000, as specified in the sample `.env` file. A Bearer authorization key is also required. At the moment, it is simply set to an environment variable with no encryption or renewal. The example below demonstrates how to list all users currently registered in the AiFace device's system.
 
-`POST /admin/push (with Bearer authorization key)`
+**Endpoint:** POST /admin/push (with Bearer authorization key)
 
 ```json
 {
@@ -40,4 +40,4 @@ The `/admin/push` endpoint is open to issue JSON commands to the device. By defa
 }
 ```
 
-**NOTE:** All commands must have a `sn` and a `cmd` key. Other key-value pairs may be required based on the command.
+**NOTE:** All commands must have `sn` and `cmd` keys. Depending on the command, other key-value pairs may be required.

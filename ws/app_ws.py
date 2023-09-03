@@ -67,7 +67,6 @@ def show_dict(d, keys):
     return ', '.join(f'{k}={d[k]}' for k in keys)
 
 def get_response(message):
-    LOG_FILE.open()
     result = None
     if message['cmd'] == 'reg':
         result = deepcopy(REGISTER_SUCCESS_RESPONSE)
@@ -85,17 +84,14 @@ def get_response(message):
             print(f"[{dtnow()}] [{CLIENT_LOG_PREFIX}] Record from {message['sn']}: {show_dict(message['record'][i], ['enrollid', 'aliasid', 'name', 'time', 'mode', 'inout', 'event'])}.")
             LOG_FILE.write(f"[{dtnow()}] [{CLIENT_LOG_PREFIX}] Record from {message['sn']}: {show_dict(message['record'][i], ['enrollid', 'aliasid', 'name', 'time', 'mode', 'inout', 'event'])}.")
 
-    LOG_FILE.close()
     return result
 
 async def send_response(websocket, message):
     if message is not None:
         if "ret" in message.keys():
             if message['ret'] == 'reg':
-                LOG_FILE.open()
                 print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Register success on {message['cloudtime']}.")
                 LOG_FILE.write(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Register success on {message['cloudtime']}.")
-                LOG_FILE.close()
             elif message['ret'] == 'sendlog':
                 pass
         await websocket.send(json.dumps(message))
@@ -108,10 +104,8 @@ async def connect_mssql(sql_host, sql_user, sql_pass, sql_db):
 
         return db
     except Exception as e:
-        LOG_FILE.open()
         print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Error: Could not connect to MSSQL database. {e}.")
         LOG_FILE.write(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Error: Could not connect to MSSQL database. {e}.")
-        LOG_FILE.close()
         return None
 
 async def insert_record(message, db, sql_table):
@@ -153,10 +147,8 @@ async def insert_record(message, db, sql_table):
         cursor.executemany(sql, val)
         db.commit()
 
-        LOG_FILE.open()
         print(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Inserted {message['count']} records from {message['sn']} to {sql_table}.")
         LOG_FILE.write(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Inserted {message['count']} records from {message['sn']} to {sql_table}.")
-        LOG_FILE.close()
 
 def save_file(message, path):
     filename = None
@@ -183,7 +175,6 @@ async def handle(websocket, path, r_ip, r_port, sql_host, sql_user, sql_pass, sq
 
     no_message_counter = 0
     while True:
-        LOG_FILE.open()
         try:
             # read message from client
             try:
@@ -234,7 +225,7 @@ async def handle(websocket, path, r_ip, r_port, sql_host, sql_user, sql_pass, sq
             LOG_FILE.write(f"[{dtnow()}] [{SERVER_LOG_PREFIX}] Error: {e}.")
             break
         finally:
-            LOG_FILE.close()
+            pass
 
 async def main(ws_ip, ws_port, r_ip, r_port, sql_host, sql_user, sql_pass, sql_db, sql_table, insert, receive):
     async with websockets.serve(lambda websocket, path: handle(
@@ -259,6 +250,7 @@ if __name__ == "__main__":
     NEW_MESSAGE_TIMEOUT = int(os.getenv("TIMEOUT_WS_NEW_MESSAGE"))
     MAX_MESSAGE_TIMEOUT = int(os.getenv("TIMEOUT_WS_MAX_WAIT"))
     LOG_FILE = LogRecord(os.getenv("PATH_WS_LOG"))
+    LOG_FILE.open()
 
     asyncio.run(main(
         os.getenv("WEBSOCKET_IP"),
